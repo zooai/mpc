@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zoo-mpc
+  namespace: zoo-system
+  labels:
+    app: zoo-mpc
+spec:
+  serviceName: zoo-mpc
+  replicas: 3
+  selector:
+    matchLabels:
+      app: zoo-mpc
+  template:
+    metadata:
+      labels:
+        app: zoo-mpc
+    spec:
+      containers:
+        - name: mpc
+          image: ghcr.io/zoo-labs/mpc:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: MPC_ORG
+              value: zoo
+            - name: MPC_THRESHOLD
+              value: "2"
+            - name: MPC_PARTIES
+              value: "3"
+            - name: MPC_BRAND_NAME
+              value: Zoo
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: zoo-db-credentials
+                  key: mpc-url
+            - name: PUBSUB_URL
+              value: nats://zoo-pubsub:4222
+            - name: REDIS_URL
+              value: redis://zoo-kv:6379
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zoo-mpc
+  namespace: zoo-system
+spec:
+  selector:
+    app: zoo-mpc
+  ports:
+    - port: 8081
+      targetPort: 8081
