@@ -33,4 +33,4 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          tags: ghcr.io/zooai/mpc:latest,ghcr.io/zooai/mpc:${{ github.sha }}
+          tags: ghcr.io/zoo-labs/mpc:latest,ghcr.io/zoo-labs/mpc:${{ github.sha }}
