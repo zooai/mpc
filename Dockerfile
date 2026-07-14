@@ -1,8 +1,11 @@
 # Zoo MPC — runs upstream luxfi/mpc (the canonical lux-native mpcd) with Zoo
-# branding. Sovereign version tag MIRRORS the wrapped upstream: zooai/mpc:v1.17.9
-# == luxfi/mpc:v1.17.9 (same convention as hanzoai/mpc:v1.17.4). Patch-pin only —
+# branding. Sovereign version tag MIRRORS the wrapped upstream: zooai/mpc:v1.17.12
+# == luxfi/mpc:v1.17.12 (same convention as hanzoai/mpc:v1.17.4). Patch-pin only —
 # never :latest, never a lazy major bump.
-FROM ghcr.io/luxfi/mpc:v1.17.9 AS upstream
+# v1.17.12 wires --threshold into the CGGMP21 keygen degree (was silently 1-of-n),
+# repairs the post-re-tag luxfi dep graph (geth v1.17.12), and restores the
+# private-module (hsm) authed fetch in the upstream build.
+FROM ghcr.io/luxfi/mpc:v1.17.12 AS upstream
 
 FROM alpine:3.21
 RUN apk add --no-cache ca-certificates curl
