@@ -1,0 +1,9 @@
+# Hanzo CI/CD for zooai/mpc: .github/workflows/cicd.yml imports hanzoai/ci,
+# which reads this file. The build door builds each image, one BuildKit Job
+# per platform.
+images:
+  - name: mpc
+    context: .
+    dockerfile: Dockerfile
+    repo: ghcr.io/zooai/mpc
+    platforms: [linux/amd64]
